@@ -1,4 +1,4 @@
-name: Daily Longevity Email
+name: Daily 2 Email
 
 on:
   schedule:
