@@ -2,14 +2,11 @@ from __future__ import annotations
 
 import os
 import smtplib
-from datetime import date, datetime
+from datetime import date
 from email.message import EmailMessage
-from zoneinfo import ZoneInfo
 
 from . import spec
 from .engine import DayPlan, assemble_model_from_globals, generate_year_plan
-
-print("[mailer] loaded from:", __file__, flush=True)
 
 
 def _bucket_items(p: DayPlan) -> dict[str, list[str]]:
@@ -64,11 +61,6 @@ def send_email_smtp(
     body: str,
     use_tls: bool = True,
 ) -> None:
-    print(
-        f"[mailer] connecting to {smtp_host}:{smtp_port} as {smtp_user} -> {to_email}",
-        flush=True,
-    )
-
     msg = EmailMessage()
     msg["From"] = smtp_user
     msg["To"] = to_email
@@ -76,19 +68,14 @@ def send_email_smtp(
     msg.set_content(body)
 
     if use_tls:
-        with smtplib.SMTP(smtp_host, smtp_port, timeout=30) as s:
-            s.set_debuglevel(1)
-            s.ehlo()
+        with smtplib.SMTP(smtp_host, smtp_port) as s:
             s.starttls()
-            s.ehlo()
             s.login(smtp_user, smtp_password)
             s.send_message(msg)
     else:
         with smtplib.SMTP_SSL(smtp_host, smtp_port) as s:
             s.login(smtp_user, smtp_password)
             s.send_message(msg)
-
-    print("[mailer] sent", flush=True)
 
 
 def main():
@@ -106,17 +93,15 @@ def main():
 
     # 1) plan
     M_raw = assemble_model_from_globals(spec)
-
-    target = datetime.now(ZoneInfo("Europe/Warsaw")).date()
-
     plans = generate_year_plan(
         M_raw,
-        target.year,
-        off_week_start_date=date(target.year, 2, 2),
-        cycle_anchor_date=date(target.year, 1, 6),
+        2026,
+        off_week_start_date=date(2026, 2, 2),
+        cycle_anchor_date=date(2026, 1, 6),
         flags={"enable_melissa": True},
     )
 
+    target = date.today()
     print("Target date:", target.isoformat())
     print(
         "Plans range:",
@@ -154,4 +139,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    print("TEST.")
+    print("Done.")

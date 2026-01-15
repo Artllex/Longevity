@@ -1,8 +1,8 @@
-name: Daily 1 Email
+name: Daily Longevity Email
 
 on:
   schedule:
-  - cron: "0 5 * * *" # 06:00 Europe/Warsaw ~ 05:00 UTC (DST uwaga)
+  - cron: "0 5 * * *" # 06:00 Europe/Warsaw ~ 05:00 UTC (uwaga na DST)
   workflow_dispatch: {}
 
 jobs:
@@ -16,23 +16,16 @@ jobs:
       with:
         python-version: "3.11"
 
-    - name: Install Poetry
+    - name: Install (none)
       run: |
-        python -m pip install --upgrade pip
-        pip install poetry
-
-    - name: Install deps
-      run: |
-        pip install poetry
-        poetry install --no-interaction --no-ansi
+        python -V
 
     - name: Run mailer
       env:
-        PYTHONPATH: src
         SMTP_HOST: ${{ secrets.SMTP_HOST }}
         SMTP_PORT: ${{ secrets.SMTP_PORT }}
         SMTP_USER: ${{ secrets.SMTP_USER }}
         SMTP_PASS: ${{ secrets.SMTP_PASS }}
         TZ: Europe/Warsaw
       run: |
-        python -m longevity.mailer
+        python -m src.longevity.mailer
