@@ -32,10 +32,12 @@ CONFIG = {
             "apply_schedule_rules",  # częstotliwości
             "base_by_block",  # blok bazowy
         ],
-        "notes": "Precedence = kolejność 'ostatnie słowo' przy sprzecznościach. OFF WEEK może skasować CORE.",
+        "notes": "Precedence = kolejność 'ostatnie słowo' "
+        "przy sprzecznościach. OFF WEEK może skasować CORE.",
     },
     "override_semantics": {
-        "allow_only": "after allow_only, list dnia = intersection(list, allowed_set) + required_event_supplements_if_missing",
+        "allow_only": "after allow_only, list dnia = intersection(list, "
+        "allowed_set) + required_event_supplements_if_missing",
         "remove_all": "after remove_all, list dnia = empty",
     },
     "event_day_selection": {

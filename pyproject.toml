@@ -1,23 +1,16 @@
 [tool.poetry]
-name = "calendar"
+name = "longevity"
 version = "0.1.0"
 description = "Data Science project template"
 authors = ["Arkadiusz Pajda <arkadiusz.pajda.97@onet.pl>"]
 readme = "README.md"
-packages = [{ include = "calendar", from = "src" }]
+packages = [{ include = "longevity", from = "src" }]
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.13"
-pandas = "^2.2.0"
-matplotlib = "^3.10.8"
-scikit-learn = "^1.5.0"
-statsmodels = "^0.14.0"
-seaborn = "^0.13.0"
-numpy = "^1.26.4"
-scipy = "^1.11.4"
-plotly = "^5.18.0"
 jupyterlab = "^4.0.0"
 notebook = "^6.5.4"
+pydantic = "^2.6.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.6.0"
@@ -41,7 +34,7 @@ target-version = "py311"
 select = ["E", "F", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
-addopts = "-q --cov=calendar --cov-report=term-missing"
+addopts = "-q --cov=longevity --cov-report=term-missing"
 testpaths = ["tests"]
 pythonpath = ["src"]
 
