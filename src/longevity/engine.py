@@ -339,7 +339,7 @@ def apply_schedule_rules(
                         "cycle_weeks",
                     )
                     assert cycle_anchor_date is not None
-                    anchor = cycle_anchor_date
+                    anchor: date = cycle_anchor_date
                 else:
                     raise ValueError(f"Unknown alignment: {align}")
 
@@ -786,3 +786,10 @@ def _ics_fold_lines(lines: list[str]) -> list[str]:
             out.append(" " + s[:74])
             s = s[74:]
     return out
+
+
+def get_day_plan(plans: list[DayPlan], target: date) -> DayPlan:
+    for p in plans:
+        if p.day == target:
+            return p
+    raise ValueError(f"Day not found: {target.isoformat()}")

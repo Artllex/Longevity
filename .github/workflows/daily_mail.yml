@@ -1,0 +1,31 @@
+name: Daily Longevity Email
+
+on:
+  schedule:
+  - cron: "0 5 * * *" # 06:00 Europe/Warsaw ~ 05:00 UTC (uwaga na DST)
+  workflow_dispatch: {}
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install (none)
+      run: |
+        python -V
+
+    - name: Run mailer
+      env:
+        SMTP_HOST: ${{ secrets.SMTP_HOST }}
+        SMTP_PORT: ${{ secrets.SMTP_PORT }}
+        SMTP_USER: ${{ secrets.SMTP_USER }}
+        SMTP_PASS: ${{ secrets.SMTP_PASS }}
+        TZ: Europe/Warsaw
+      run: |
+        python -m src.longevity.mailer

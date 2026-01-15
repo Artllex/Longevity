@@ -11,6 +11,7 @@ python = ">=3.11,<3.13"
 jupyterlab = "^4.0.0"
 notebook = "^6.5.4"
 pydantic = "^2.6.1"
+pydantic-settings = "^2.6.1"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "^0.6.0"
@@ -18,7 +19,6 @@ pytest = "^8.0.0"
 pytest-cov = "^5.0.0"
 pre-commit = "^3.8.0"
 mypy = "^1.11.0"
-pydantic-settings = "^2.6.1"
 python-dotenv = "^1.0.1"
 
 # Typy / stubs (DS-friendly)
