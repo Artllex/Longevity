@@ -79,7 +79,19 @@ def send_email_smtp(
 
 
 def main():
-    # 1) generuj plan roczny
+    print("Mailer start")
+
+    # pokaż, czy env w ogóle jest ustawiony
+    for k in ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS", "TZ"]:
+        v = os.environ.get(k)
+        if v is None:
+            print(f"ENV {k}=<MISSING>")
+        elif k == "SMTP_PASS":
+            print(f"ENV {k}=<SET len={len(v)}>")
+        else:
+            print(f"ENV {k}={v}")
+
+    # 1) plan
     M_raw = assemble_model_from_globals(spec)
     plans = generate_year_plan(
         M_raw,
@@ -89,15 +101,28 @@ def main():
         flags={"enable_melissa": True},
     )
 
-    # 2) wybierz dzień (dzisiaj / konkretny)
-    target = date.today()  # albo np. date(2026, 1, 1)
-    p = next(x for x in plans if x.day == target)
+    target = date.today()
+    print("Target date:", target.isoformat())
+    print(
+        "Plans range:",
+        plans[0].day.isoformat(),
+        "->",
+        plans[-1].day.isoformat(),
+    )
 
-    # 3) zbuduj treść maila
+    p = next((x for x in plans if x.day == target), None)
+    print("Found day:", p is not None)
+
+    if p is None:
+        raise RuntimeError(
+            "Target day not found in generated plans (year mismatch?)"
+        )
+
     body = build_email_text(p)
     subject = f"Longevity 4.8 — {p.day.isoformat()} ({p.block_id})"
+    print("Subject:", subject)
+    print("Body preview:", body[:120].replace("\n", " | "), "...")
 
-    # 4) wysyłka: dane z ENV (bez trzymania haseł w kodzie)
     send_email_smtp(
         smtp_host=os.environ["SMTP_HOST"],
         smtp_port=int(os.environ.get("SMTP_PORT", "587")),
@@ -108,6 +133,8 @@ def main():
         body=body,
         use_tls=True,
     )
+
+    print("✅ Sent")
 
 
 if __name__ == "__main__":
