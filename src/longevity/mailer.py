@@ -2,9 +2,8 @@ from __future__ import annotations
 
 import os
 import smtplib
-from datetime import date, datetime
+from datetime import date
 from email.message import EmailMessage
-from zoneinfo import ZoneInfo
 
 from . import spec
 from .engine import DayPlan, assemble_model_from_globals, generate_year_plan
