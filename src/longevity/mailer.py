@@ -9,6 +9,8 @@ from zoneinfo import ZoneInfo
 from . import spec
 from .engine import DayPlan, assemble_model_from_globals, generate_year_plan
 
+print("[mailer] loaded from:", __file__, flush=True)
+
 
 def _bucket_items(p: DayPlan) -> dict[str, list[str]]:
     def fmt(it) -> str:
