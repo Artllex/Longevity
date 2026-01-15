@@ -80,10 +80,6 @@ def send_email_smtp(
 
 
 def main():
-    now_pl = datetime.now(tz=ZoneInfo("Europe/Warsaw"))
-    if now_pl.hour != 6:
-        return
-
     # 1) generuj plan roczny
     M_raw = assemble_model_from_globals(spec)
     plans = generate_year_plan(
