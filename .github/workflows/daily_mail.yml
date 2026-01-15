@@ -23,6 +23,7 @@ jobs:
 
     - name: Install deps
       run: |
+        pip install poetry
         poetry install --no-interaction --no-ansi
 
     - name: Run mailer
