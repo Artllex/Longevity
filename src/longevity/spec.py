@@ -97,7 +97,7 @@ CORE_SET = {"omega3_nko", "mg_zn_b6", "collagen", "probiotic", "d3k2"}
 CONFLICTS = {
     "block_exclusions": {
         "NAD": {"curcumin_piperine", "lycopene", "astaxanthin", "r_ala"},
-        "DETOX": {"spermidine", "q10", "pqq"},
+        "DETOX": {"q10_pqq_spermidine"},
         "MITO": set(),
         "ANTIAGE": set(),
     },
@@ -397,6 +397,27 @@ SUPPLEMENTS = {
         "notes": None,
     },
     # MITO
+    "q10_pqq_spermidine": {
+        "id": "q10_pqq_spermidine",
+        "name": "Q10 + PQQ + Spermidyna (combo)",
+        "default_dose": {
+            "amount": None,
+            "unit": None,
+            "timing_hint": "morning",
+        },
+        "tags": {"MITO", "NAD"},
+        "constraints": [],
+        "schedule_rules": [
+            {
+                "id": "q10pqqsperm_5on2off",
+                "type": "week_pattern",
+                "active_blocks": {"MITO", "NAD"},
+                "params": {"days_included": {0, 1, 2, 3, 4}},
+            }
+        ],
+        "priority": 60,  # możesz zostawić 60 jak q10 albo 55 jak pqq
+        "notes": "Scalone z q10/pqq/spermidine. W NAD obejmuje też Q10 z racji produktu 3w1.",
+    },
     "q10": {
         "id": "q10",
         "name": "Q10",
