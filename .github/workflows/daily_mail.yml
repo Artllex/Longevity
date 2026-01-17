@@ -2,7 +2,7 @@ name: Daily 2 Email
 
 on:
   schedule:
-  - cron: "0 5 * * *" # 06:00 Europe/Warsaw ~ 05:00 UTC (uwaga na DST)
+  - cron: "0 3 * * *" # 06:00 Europe/Warsaw ~ 05:00 UTC (uwaga na DST)
   workflow_dispatch: {}
 
 jobs:
