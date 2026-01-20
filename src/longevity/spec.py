@@ -416,67 +416,67 @@ SUPPLEMENTS = {
             }
         ],
         "priority": 60,  # możesz zostawić 60 jak q10 albo 55 jak pqq
-        "notes": "Scalone z q10/pqq/spermidine. W NAD obejmuje też Q10 z racji produktu 3w1.",
+        "notes": "W NAD obejmuje też Q10 z racji produktu 3w1.",
     },
-    "q10": {
-        "id": "q10",
-        "name": "Q10",
-        "default_dose": {
-            "amount": None,
-            "unit": None,
-            "timing_hint": "morning",
-        },
-        "tags": {"MITO"},
-        "constraints": [],
-        "schedule_rules": [
-            {
-                "id": "q10_5on2off",
-                "type": "week_pattern",
-                "active_blocks": {"MITO"},
-                "params": {"days_included": {0, 1, 2, 3, 4}},
-            }
-        ],
-        "priority": 60,
-        "notes": None,
-    },
-    "pqq": {
-        "id": "pqq",
-        "name": "PQQ",
-        "default_dose": {
-            "amount": None,
-            "unit": None,
-            "timing_hint": "morning",
-        },
-        "tags": {"MITO", "NAD"},
-        "constraints": [],
-        "schedule_rules": [
-            {
-                "id": "pqq_5on2off",
-                "type": "week_pattern",
-                "active_blocks": {"MITO", "NAD"},
-                "params": {"days_included": {0, 1, 2, 3, 4}},
-            }
-        ],
-        "priority": 55,
-        "notes": None,
-    },
-    "spermidine": {
-        "id": "spermidine",
-        "name": "Spermidyna",
-        "default_dose": None,
-        "tags": {"MITO", "NAD"},
-        "constraints": [],
-        "schedule_rules": [
-            {
-                "id": "sperm_5on2off",
-                "type": "week_pattern",
-                "active_blocks": {"MITO", "NAD"},
-                "params": {"days_included": {0, 1, 2, 3, 4}},
-            }
-        ],
-        "priority": 50,
-        "notes": None,
-    },
+    # "q10": {
+    #    "id": "q10",
+    #    "name": "Q10",
+    #    "default_dose": {
+    #        "amount": None,
+    #        "unit": None,
+    #        "timing_hint": "morning",
+    #    },
+    #    "tags": {"MITO"},
+    #    "constraints": [],
+    #    "schedule_rules": [
+    #        {
+    #            "id": "q10_5on2off",
+    #            "type": "week_pattern",
+    #            "active_blocks": {"MITO"},
+    #            "params": {"days_included": {0, 1, 2, 3, 4}},
+    #        }
+    #    ],
+    #    "priority": 60,
+    #    "notes": None,
+    # },
+    # "pqq": {
+    #    "id": "pqq",
+    #    "name": "PQQ",
+    #    "default_dose": {
+    #        "amount": None,
+    #        "unit": None,
+    #        "timing_hint": "morning",
+    #    },
+    #    "tags": {"MITO", "NAD"},
+    #    "constraints": [],
+    #    "schedule_rules": [
+    #        {
+    #            "id": "pqq_5on2off",
+    #            "type": "week_pattern",
+    #            "active_blocks": {"MITO", "NAD"},
+    #            "params": {"days_included": {0, 1, 2, 3, 4}},
+    #        }
+    #    ],
+    #    "priority": 55,
+    #    "notes": None,
+    # },
+    # "spermidine": {
+    #    "id": "spermidine",
+    #    "name": "Spermidyna",
+    #    "default_dose": None,
+    #    "tags": {"MITO", "NAD"},
+    #    "constraints": [],
+    #    "schedule_rules": [
+    #        {
+    #            "id": "sperm_5on2off",
+    #            "type": "week_pattern",
+    #            "active_blocks": {"MITO", "NAD"},
+    #            "params": {"days_included": {0, 1, 2, 3, 4}},
+    #        }
+    #    ],
+    #    "priority": 50,
+    #    "notes": None,
+    # },
     "cordyceps": {
         "id": "cordyceps",
         "name": "Cordyceps",
