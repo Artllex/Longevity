@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import smtplib
+import ssl
 from datetime import date, timedelta
 from email.message import EmailMessage
 
@@ -68,7 +69,7 @@ def send_email_smtp(
     subject: str,
     body: str,
     attachment_txt: tuple[str, str] | None = None,
-    use_tls: bool = True,
+    mode: str = "ssl",  # "ssl" (465) albo "starttls" (587)
 ) -> None:
     msg = EmailMessage()
     msg["From"] = smtp_user
@@ -85,15 +86,21 @@ def send_email_smtp(
             filename=filename,
         )
 
-    if use_tls:
+    if mode == "starttls":
         with smtplib.SMTP(smtp_host, smtp_port) as s:
-            s.starttls()
+            s.ehlo()
+            s.starttls(context=ssl.create_default_context())
+            s.ehlo()
+            s.login(smtp_user, smtp_password)
+            s.send_message(msg)
+    elif mode == "ssl":
+        with smtplib.SMTP_SSL(
+            smtp_host, smtp_port, context=ssl.create_default_context()
+        ) as s:
             s.login(smtp_user, smtp_password)
             s.send_message(msg)
     else:
-        with smtplib.SMTP_SSL(smtp_host, smtp_port) as s:
-            s.login(smtp_user, smtp_password)
-            s.send_message(msg)
+        raise ValueError("mode must be 'ssl' or 'starttls'")
 
 
 def build_30day_text(plans: list[DayPlan], start: date, days: int = 30) -> str:
@@ -164,14 +171,14 @@ def main():
 
     send_email_smtp(
         smtp_host=os.environ["SMTP_HOST"],
-        smtp_port=int(os.environ.get("SMTP_PORT", "587")),
+        smtp_port=int(os.environ["SMTP_PORT"]),
         smtp_user=os.environ["SMTP_USER"],
         smtp_password=os.environ["SMTP_PASS"],
         to_email="arkadiusz.pajda.97@onet.pl",
         subject=subject,
         body=body,
         attachment_txt=(attach_name, horizon_txt),
-        use_tls=True,
+        mode="ssl",
     )
 
     print("✅ Sent")
