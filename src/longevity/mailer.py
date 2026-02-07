@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 import smtplib
-from datetime import date
+from datetime import date, timedelta
 from email.message import EmailMessage
 
 from . import spec
@@ -62,6 +62,7 @@ def send_email_smtp(
     to_email: str,
     subject: str,
     body: str,
+    attachment_txt: tuple[str, str] | None = None,
     use_tls: bool = True,
 ) -> None:
     msg = EmailMessage()
@@ -69,6 +70,15 @@ def send_email_smtp(
     msg["To"] = to_email
     msg["Subject"] = subject
     msg.set_content(body)
+
+    if attachment_txt is not None:
+        filename, content = attachment_txt
+        msg.add_attachment(
+            content.encode("utf-8"),
+            maintype="text",
+            subtype="plain",
+            filename=filename,
+        )
 
     if use_tls:
         with smtplib.SMTP(smtp_host, smtp_port) as s:
@@ -79,6 +89,25 @@ def send_email_smtp(
         with smtplib.SMTP_SSL(smtp_host, smtp_port) as s:
             s.login(smtp_user, smtp_password)
             s.send_message(msg)
+
+
+def build_30day_text(plans: list[DayPlan], start: date, days: int = 30) -> str:
+    # Szybki lookup: date -> DayPlan
+    by_day = {p.day: p for p in plans}
+    chunks: list[str] = []
+
+    for i in range(days):
+        d = start + timedelta(days=i)
+        p = by_day.get(d)
+        if p is None:
+            # jeśli coś poszło nie tak (np. inny rok), daj czytelną informację
+            chunks.append(f"DATA: {d.isoformat()}\nBRAK PLANU DLA TEJ DATY\n")
+            continue
+
+        chunks.append(build_email_text(p))
+        chunks.append("")  # pusta linia między dniami
+
+    return "\n".join(chunks).strip() + "\n"
 
 
 def main():
@@ -122,6 +151,8 @@ def main():
         )
 
     body = build_email_text(p)
+    horizon_txt = build_30day_text(plans, target, days=30)
+    attach_name = f"longevity_next_30_days_{target.isoformat()}.txt"
     subject = f"Longevity 4.8 — {p.day.isoformat()} ({p.block_id})"
     print("Subject:", subject)
     print("Body preview:", body[:120].replace("\n", " | "), "...")
@@ -134,6 +165,7 @@ def main():
         to_email="arkadiusz.pajda.97@onet.pl",
         subject=subject,
         body=body,
+        attachment_txt=(attach_name, horizon_txt),
         use_tls=True,
     )
 
