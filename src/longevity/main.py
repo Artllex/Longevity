@@ -1,11 +1,15 @@
 from datetime import date
 
+from dotenv import load_dotenv
+
 from longevity import spec
 from longevity.engine import (
     assemble_model_from_globals,
     export_csv,
     generate_year_plan,
 )
+
+load_dotenv()
 
 M_raw = assemble_model_from_globals(spec)
 
