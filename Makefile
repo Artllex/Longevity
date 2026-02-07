@@ -1,4 +1,4 @@
-calendar ?= calendar
+package ?= longevity
 POETRY ?= poetry
 
 .DEFAULT_GOAL := help
@@ -87,7 +87,7 @@ shell: ## Print command to activate Poetry venv (Poetry 2.x)
 
 .PHONY: run
 run: ## Run the app
-	$(POETRY) run python -m $(calendar).main
+	$(POETRY) run python -m $(package).main
 
 .PHONY: format
 format: ## Format code (ruff)
@@ -112,7 +112,7 @@ test: ## Run tests
 
 .PHONY: cov
 cov: ## Tests + coverage
-	$(POETRY) run pytest --cov=$(calendar) --cov-report=term-missing
+	$(POETRY) run pytest --cov=$(package) --cov-report=term-missing
 
 # -----------------------
 # Composite
