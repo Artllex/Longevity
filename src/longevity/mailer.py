@@ -163,15 +163,15 @@ def main():
     print("Body preview:", body[:120].replace("\n", " | "), "...")
 
     send_email_smtp(
-        smtp_host="smtp.poczta.onet.pl",  # os.environ["SMTP_HOST"],
-        smtp_port=587,  # int(os.environ.get("SMTP_PORT", "587")),
-        smtp_user="arkadiusz.pajda.97@onet.pl",  # os.environ["SMTP_USER"],
+        smtp_host=os.environ["SMTP_HOST"],
+        smtp_port=int(os.environ.get("SMTP_PORT", "465")),
+        smtp_user=os.environ["SMTP_USER"],
         smtp_password=os.environ["SMTP_PASS"],
         to_email="arkadiusz.pajda.97@onet.pl",
         subject=subject,
         body=body,
         attachment_txt=(attach_name, horizon_txt),
-        use_tls=True,
+        use_tls=False,
     )
 
     print("✅ Sent")

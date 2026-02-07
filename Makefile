@@ -89,6 +89,11 @@ shell: ## Print command to activate Poetry venv (Poetry 2.x)
 run: ## Run the app
 	$(POETRY) run python -m $(package).main
 
+.PHONY: mail
+mail:
+	@set -a; [ -f .env ] && . ./.env; set +a; \
+	$(POETRY) run python -m longevity.mailer
+
 .PHONY: format
 format: ## Format code (ruff)
 	$(POETRY) run ruff format .
