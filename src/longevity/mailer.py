@@ -32,7 +32,10 @@ def _bucket_items(p: DayPlan) -> dict[str, list[str]]:
 
 def build_email_text(p: DayPlan) -> str:
     b = _bucket_items(p)
-    ev = ", ".join(p.events) if p.events else "-"
+    events = list(p.events)
+    if p.is_off_week:
+        events = ["off_week"] + events
+    ev = ", ".join(events) if events else "-"
 
     lines = []
     lines.append(f"DATA: {p.day.isoformat()}")
