@@ -6,11 +6,16 @@ from datetime import date, timedelta
 from email.message import EmailMessage
 
 from . import spec
-from .engine import DayPlan, assemble_model_from_globals, generate_year_plan
+from .engine import (
+    DayItem,
+    DayPlan,
+    assemble_model_from_globals,
+    generate_year_plan,
+)
 
 
 def _bucket_items(p: DayPlan) -> dict[str, list[str]]:
-    def fmt(it) -> str:
+    def fmt(it: DayItem) -> str:
         dose = it.dose
         if isinstance(dose, dict):
             amt = dose.get("amount")
@@ -19,7 +24,7 @@ def _bucket_items(p: DayPlan) -> dict[str, list[str]]:
                 return f"{it.name} ({amt} {unit})".strip()
         return it.name
 
-    buckets = {"morning": [], "any": [], "evening": []}
+    buckets: dict[str, list[str]] = {"morning": [], "any": [], "evening": []}
     for it in p.items:
         if it.timing_hint == "morning":
             buckets["morning"].append(fmt(it))

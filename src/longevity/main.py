@@ -1,7 +1,11 @@
 from datetime import date
 
-import spec
-from engine import assemble_model_from_globals, export_csv, generate_year_plan
+from longevity import spec
+from longevity.engine import (
+    assemble_model_from_globals,
+    export_csv,
+    generate_year_plan,
+)
 
 M_raw = assemble_model_from_globals(spec)
 

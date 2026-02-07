@@ -1,6 +1,7 @@
 # =========================
 # LONGEVITY 4.8 — DICT-ONLY v2.2 (MERGED, KOMPLET)
 # =========================
+from typing import Any
 
 PIPELINE = [
     "base_by_block",
@@ -151,7 +152,7 @@ EVENTS = {
 # SUPPLEMENTS
 # =========================
 
-SUPPLEMENTS = {
+SUPPLEMENTS: dict[str, Any] = {
     # CORE
     "omega3_nko": {
         "id": "omega3_nko",

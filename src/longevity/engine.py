@@ -6,7 +6,7 @@ import hashlib
 import re
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
-from typing import Any
+from typing import Any, cast
 
 # =========================
 # OUTPUT TYPES
@@ -309,7 +309,7 @@ def apply_schedule_rules(
     for sid, spec in M["SUPPLEMENTS"].items():
         for rule in spec.get("schedule_rules", []):
             rtype = rule["type"]
-            ab = rule.get("active_blocks")
+            ab = cast(list[str] | None, rule.get("active_blocks"))
             if not blocks_ok(ab):
                 continue
 
@@ -330,16 +330,17 @@ def apply_schedule_rules(
 
             elif rtype == "cycle_weeks":
                 align = params.get("alignment", "custom_date")
+
+                anchor: date
                 if align == "year_start":
                     anchor = date(d.year, 1, 1)
                 elif align == "custom_date":
                     _ensure(
                         cycle_anchor_date is not None,
-                        "cycle_anchor_date required for custom_date "
-                        "cycle_weeks",
+                        "cycle_anchor_date required",
                     )
                     assert cycle_anchor_date is not None
-                    anchor: date = cycle_anchor_date
+                    anchor = cycle_anchor_date
                 else:
                     raise ValueError(f"Unknown alignment: {align}")
 
@@ -610,7 +611,7 @@ def export_csv(plans, path: str) -> None:
     W komórkach: lista "name (dose)" rozdzielona " | "
     """
 
-    def fmt_item(it) -> str:
+    def fmt_item(it: DayItem) -> str:
         # it: DayItem from engine
         dose = it.dose
         if isinstance(dose, dict):
@@ -625,7 +626,12 @@ def export_csv(plans, path: str) -> None:
         w.writerow(["date", "block", "events", "morning", "any", "evening"])
 
         for p in plans:
-            buckets = {"morning": [], "any": [], "evening": [], None: []}
+            buckets: dict[str | None, list[str]] = {
+                "morning": [],
+                "any": [],
+                "evening": [],
+                None: [],
+            }
             for it in p.items:
                 buckets.get(it.timing_hint, buckets[None]).append(fmt_item(it))
 
@@ -671,12 +677,12 @@ def _uid_for_day(prefix: str, d: date) -> str:
     return f"{prefix}-{d.strftime('%Y%m%d')}-{h}@longevity"
 
 
-def _format_day_items_for_desc(items) -> tuple[str, str, str]:
+def _format_day_items_for_desc(items: list[DayItem]) -> tuple[str, str, str]:
     """
     Returns 3 lines: morning/any/evening as bullet-like text (no markdown)
     """
 
-    def fmt(it) -> str:
+    def fmt(it: DayItem) -> str:
         dose = it.dose
         if isinstance(dose, dict):
             amt = dose.get("amount")
