@@ -105,7 +105,7 @@ def build_30day_text(plans: list[DayPlan], start: date, days: int = 30) -> str:
             continue
 
         chunks.append(build_email_text(p))
-        chunks.append("")  # pusta linia między dniami
+        chunks.append("\n")  # dodatkowa pusta linia między dniami
 
     return "\n".join(chunks).strip() + "\n"
 
