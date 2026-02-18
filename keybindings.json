@@ -1,0 +1,37 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "alt+oem_5",
+        "command": "editor.action.inlineSuggest.trigger"
+    },
+    {
+        "key": "alt+l",
+        "command": "multiCommand.ruffFixAndFormat",
+        "when": "editorTextFocus && editorLangId == 'python'"
+    },
+    {
+        "key": "alt+l",
+        "command": "editor.action.formatDocument",
+        "when": "editorTextFocus && editorLangId == 'r'"
+    },
+    {
+        "key": "alt+l",
+        "command": "editor.action.formatDocument",
+        "when": "editorTextFocus && editorLangId == 'julia'"
+    },
+    {
+        "key": "alt+l",
+        "command": "editor.action.formatDocument",
+        "when": "editorTextFocus && editorLangId != 'python' && editorLangId != 'julia' && editorLangId != 'r'"
+    },
+    {
+        "key": "alt+l",
+        "command": "quarto.formatCell",
+        "when": "editorTextFocus && !editorHasSelection && editorLangId == 'quarto'"
+    },
+    {
+        "key": "ctrl+l",
+        "command": "editor.action.formatSelection",
+        "when": "editorHasDocumentSelectionFormattingProvider && editorTextFocus && !editorReadonly"
+    }
+]
